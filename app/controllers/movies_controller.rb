@@ -12,6 +12,19 @@ class MoviesController < ApplicationController
 
   def index
     @movies = Movie.all
+    
+    if(params.has_key?(:sort) && !params.has_key?(:commit))
+      if params[:sort] == "title"
+        @movies = Movie.all.order(:title => "ASC")
+    
+      elsif params[:sort] == "release_date"
+        @movies = Movie.all.order(:release_date => "DESC") 
+    
+      else
+          @movies = Movie.all
+      end
+    end
+    
   end
 
   def new
@@ -40,6 +53,12 @@ class MoviesController < ApplicationController
     @movie.destroy
     flash[:notice] = "Movie '#{@movie.title}' deleted."
     redirect_to movies_path
+  end
+  
+  helper_method :find_class
+  
+  def find_class(header)
+    params[:sort] == header ? 'hilite' : nil
   end
 
 end
