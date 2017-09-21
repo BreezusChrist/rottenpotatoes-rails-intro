@@ -11,6 +11,9 @@ class MoviesController < ApplicationController
   end
 
   def index
+    
+    #comment
+    
     @movies = Movie.all
     
     if(params.has_key?(:sort) && !params.has_key?(:commit))
